@@ -1,0 +1,22 @@
+<div class="albumDetailContainer">
+
+	<img src="{{adc.currentAlbum.albumCover}}" width="400" height="400">
+	<h1>title: {{adc.currentAlbum.albumTitle}}</h1>
+	<h2>artist: {{adc.currentArtist.artist}}</h2>
+
+	<div class="albumTracksList" ng-repeat="track in adc.currentAlbum.tracks">
+		
+		<div class="trackDisplay">
+			<span ng-click="adc.playTrack(track, adc.currentAlbum, adc.currentArtist)">{{track.trackTitle}}</span>
+		</div>
+	
+	</div>
+
+
+
+
+
+
+
+
+</div>
