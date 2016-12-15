@@ -56,6 +56,21 @@ app.get('/tracks/:artistName/:albumName', (req, res) => {
     });
 });
 
+//gets albums for artist
+app.get('/albums/:artistName', (req, res) => {
+  Album
+    .find({albumArtist: req.params.artistName})
+    .exec()
+    .then(album =>res.json(album))
+    .catch(err => {
+      console.error(err);
+        res.status(500).json({message: 'Internal server error'})
+    });
+});
+
+
+
+//gets specific album
 app.get('/albums/:artistName/:albumName', (req, res) => {
   Album
     .find({albumName: req.params.albumName})

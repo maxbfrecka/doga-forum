@@ -1,5 +1,5 @@
 angular.module('artist', [])
-.directive('mxArtist', ['ngAudio', 'nowPlayingList', 'browseTestData', 'libraryData', '$http', 'Upload', 'artistData', '$routeParams', '$location', 'addAlbumData', function(ngAudio, nowPlayingList, browseTestData, libraryData, $http, Upload, artistData, $routeParams, $location, addAlbumData){
+.directive('mxArtist', ['ngAudio', 'nowPlayingList', 'browseTestData', 'libraryData', '$http', 'Upload', 'artistData', '$routeParams', '$location', 'addAlbumData', 'albumData', function(ngAudio, nowPlayingList, browseTestData, libraryData, $http, Upload, artistData, $routeParams, $location, addAlbumData, albumData){
 	return {
 		restrict: 'E',
 	  templateUrl: 'artists/artist/artist.html',
@@ -34,11 +34,24 @@ angular.module('artist', [])
 			    		return obj.artistName.replace(/\s+/g, '-').toLowerCase() === scope.currentArtistName.replace(/\s+/g, '-').toLowerCase();
 					})[0];
 
-
+			  	getAlbums(scope.currentArtist.artistName)
         }, function (error) {
           console.log('failure to load')
         })
 	    }
+
+	    
+	    //places in currentArtist.artistName from above function, may need to put this in that function!
+	    function getAlbums(albumArtist){
+	    	albumData.getAlbums(albumArtist)
+	    	.then(function (response){
+	    		scope.albums = response.data
+	    		console.log(scope.albums)
+	    	}, function(error){
+	    		console.log('albums failed to load')
+	    	})
+	    }
+
 
 	    //function to set current artist that is being edited
 	    //then changes to create album page, where you will use that data!
@@ -54,4 +67,37 @@ angular.module('artist', [])
 	  }
 	}
 }])
+
+
+.factory('albumData', ['$http', '$q', function($http, $q){
+	albumData = {}
+
+		albumData.albums = undefined
+		
+		albumData.getAlbums = function(albumArtist){
+			const APIURL = '/albums/'+albumArtist
+			console.log('the API URL to get albums:')
+			console.log(APIURL)
+			return $http.get(APIURL, {cache:true})
+	  }
+
+	  albumData.showAlbums = function(){
+	    	albumData.getAlbums()
+	    	.then(function(response){
+	    		albumData.albums = response.data.albums
+	    	}, function(error){
+	    		console.log('failed')
+	    	})	
+	    }
+
+
+
+
+	return albumData
+}])
+
+
+
+
+
 

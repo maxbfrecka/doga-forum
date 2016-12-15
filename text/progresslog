@@ -68,7 +68,8 @@ Goals Tomorrow:
 -tracks should be named by their ID and then extension added
 -consider file conversion
 -file playback
--
+-display albums, display artists, link things, display tracks
+-playback music, wire up controller
 
 
 

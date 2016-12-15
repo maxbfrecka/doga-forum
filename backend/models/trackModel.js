@@ -38,7 +38,6 @@ trackSchema.methods.apiRepr = function() {
   };
 }
 
-
 const Track = mongoose.model('Track', trackSchema);
 
 module.exports = {Track};
