@@ -17,17 +17,12 @@ angular.module('createAlbum',['ngFileUpload'])
 	  	//funtion to add new information to ng-repeat
 	  	scope.addNewTrack = function(){
 	  		trackNumber = scope.tracks.length+1
-	  		scope.tracks.push({trackNumber: trackNumber, trackName: '', trackFile: trackFile})
+	  		scope.tracks.push({trackNumber: trackNumber, trackName: '', trackFile: scope.trackFile})
 	  		console.log(scope.tracks)
 
 	  	}
 
-
-
-
-
-
-
+	  	//CALLBACK IS USED INSIDE uploadAlbumArt to UPLOAD TRACKS
 		  scope.submitAlbum = function() {
 	  		console.log(scope.albumImageFile)
 	      if (scope.form.albumImage.$valid && scope.albumImageFile) {
@@ -51,6 +46,8 @@ angular.module('createAlbum',['ngFileUpload'])
         }).then(function (res) {
             console.log('Success ' + res.config.data.file.name + 'uploaded. Response: ' + res.data)
             //CALL BACK FUNCTION SHOULD BE FIRED HERE, TO UPLOAD TRACKS!
+        		console.log('your boy should be firing now...')
+           	scope.uploadTracks(scope.tracks)
         }, function (res) {
             console.log('Error status: ' + res.status)
         }, function (evt) {
@@ -58,6 +55,27 @@ angular.module('createAlbum',['ngFileUpload'])
             console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name)
         })
 	    }
+
+	    scope.uploadTracks = function (files) {
+	      if (files && files.length) {
+	        for (var i = 0; i < files.length; i++) {
+	          Upload.upload({
+	          	url: '/../api/createTrack', 
+	          	data: {file: files[i].trackFile, trackUserName: scope.username, trackNumber: files[i].trackNumber, trackName: files[i].trackName, trackAlbum: scope.albumName, trackArtist: scope.artistEditName},
+	        		file: files[i].trackFile
+	        	})
+	        }
+	      }
+	    }
+
+    //call like this
+		//scope.uploadTracks(scope.tracks)
+
+
+
+
+
+
 
 	    /*scope.uploadAlbumTrack = function(file) {
 	    	const url = '/../api/createTracks'

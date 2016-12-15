@@ -9,33 +9,7 @@ const artistSchema = mongoose.Schema({
 	artistImage: String,
 	artistGenre: {type: String, required: true},
 	artistId: {type: String, required: true},
-	albums: [
-		{
-		albumName: String,
-		albumArt: String,
-		albumArtist: String,
-		albumUserName: String,
-		albumGenre: String,
-		albumId: String,
-		dateCreated: Date,
-		dateAdded: Date,
-		timeLength: Number,
-		tracks: [
-			{
-			trackName: String,
-			trackNumber: Number,
-			trackArtist: String,
-			trackArt: String,
-			trackId: String,
-			trackUserName: String,
-			trackAlbum: String,
-			trackGenre: String,
-			trackWavSource: String,
-			trackMp3Source: String
-			}
-		]
-		}
-	]
+	artistDateAdded: Date
 })
 
 artistSchema.methods.apiRepr = function() {
@@ -46,7 +20,8 @@ artistSchema.methods.apiRepr = function() {
     artistGenre: this.artistGenre,
     userName: this.userName,
     artistImage: this.artistImage,
-    albums: this.albums
+    artistId: this.artistId,
+    artistBio: this.artistBio
   };
 }
 

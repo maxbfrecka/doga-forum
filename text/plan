@@ -1,3 +1,29 @@
+
+need Mongoose to:
+-return artistID (already know how)
+-return the albumId for a particular album...
+
+so go to that artist, then go to that album
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 question: how to do track by track upload system!
 just a basic system... not complicated yet
 

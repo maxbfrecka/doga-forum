@@ -3,22 +3,15 @@ const path = require('path')
 const uuid = require('uuid')
 const mv = require('mv')
 const mkdirp = require('mkdirp-promise')
-const {Artist} = require('../artistModel');
+const {Artist} = require('../models/artistModel');
+const {Album} = require('../models/albumModel');
 
 createAlbum = function() {};
-
-
-
 
 createAlbum.prototype.uploadFile = function(req, res) {
   var file = req.files.file;
   //id for storage
   const albumId = uuid.v4()
-
-  console.log('received request')
-
-  console.log(Artist.findOne({artistName: req.body.albumArtist}))
-
 
   //function to add album folders
   makeDirs = function(artistId ,callback){
@@ -46,27 +39,19 @@ createAlbum.prototype.uploadFile = function(req, res) {
     })
   }
 
+  //adds image to new folder
   addFile = function(artistId){
     var tmp_path = file.path;
-    //adds image to new folder
     var target_path = path.join(__dirname, '/../file-system/artists/'+artistId+'/albums/'+ albumId + '/images/' + file.name)
-    
-    console.log('SAVING THE IMAGE:')
-    console.log(target_path)
-    
     var src = fs.createReadStream(tmp_path);
-    console.log('attempting file write')
-    console.log(src)
     var dest = fs.createWriteStream(target_path);
     src.pipe(dest);
   }
 
-  //need to get the artist Id to insert into files
-  //callbackA should be to insert the album into the database with results of the query
-  //callbackB should add the folders, save the album cover image, and then save the tracks/convert using more future callbacks
-  
+  //callbacks at bottom ensure order of operations
   var artistId = undefined
   getArtistId = function(callbackA, callbackB) {
+    console.log(req.body.albumArtist)
     var query = Artist.findOne({ 'artistName': req.body.albumArtist })
     query.exec(function(err, Artist) {
       if (err) {
@@ -81,37 +66,30 @@ createAlbum.prototype.uploadFile = function(req, res) {
     })
   }
 
+  //adds to albums collection
   addAlbumToDatabase = function(artistId){
     console.log('inside add to database')
     console.log(artistId)
     const dateAdded = new Date()
     //defines path for the album art
     const albumArt = artistId + '/albums/' + albumId + '/images/' + file.name
-    Artist
-      .findOneAndUpdate({artistName: req.body.albumArtist}, 
-        {$push: 
-        {albums:
+    Album
+      .create(
           {albumName:req.body.albumName, 
           albumUserName: req.body.albumUserName, 
           albumArtist: req.body.albumArtist,
           albumArt: albumArt,
           albumId: albumId,
+          albumArtistId: artistId,
           dateAdded: dateAdded
           }
-        }
-      })
-      .then(artist => res.status(204).end())
+        )
+      .then(album => res.status(204).json({message: 'It worked'}))
       .catch(err => res.status(500).json({message: 'Internal server error'}))
   }
 
   //arguments are placed in functions within getArtistId definition! this triggers everything!
   getArtistId(addAlbumToDatabase, makeDirs)
-
-
-
-
-
-
 
   
 

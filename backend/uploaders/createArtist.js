@@ -3,7 +3,7 @@ const path = require('path')
 const uuid = require('uuid')
 const mv = require('mv')
 const mkdirp = require('mkdirp-promise')
-const {Artist} = require('./artistModel');
+const {Artist} = require('../models/artistModel');
 
 createArtist = function() {};
 
@@ -47,7 +47,7 @@ createArtist.prototype.uploadFile = function(req, res) {
     console.log(file.path)
     var tmp_path = file.path;
     //adds image to new folder
-    var target_path = path.join(__dirname, '/file-system/artists/'+artistId+'/images/'+file.name)
+    var target_path = path.join(__dirname, '/../file-system/artists/'+artistId+'/images/'+file.name)
     var src = fs.createReadStream(tmp_path);
     console.log('attempting file write')
     console.log(src)
@@ -72,8 +72,7 @@ createArtist.prototype.uploadFile = function(req, res) {
       artistGenre: req.body.artistGenre,
       artistImage: artistImage,
       userName: req.body.userName,
-      artistId: artistId,
-      albums: []
+      artistId: artistId
     })
     .then(
       artist => res.status(201).json(artist.apiRepr()))

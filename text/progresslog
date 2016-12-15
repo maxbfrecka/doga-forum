@@ -56,6 +56,39 @@ Goals Tomorrow:
 -convert tracks to mp3 and put into album folder
 -playback
 
+wed: 12:14:16
+-artist/album/track schemas working
+-can add an album
+-add track system working, basically...
+URGENT NOTES:
+-a good guess for the reason sometimes things are goofing
+-on album upload is that the artists aren't refreshing
+Goals Tomorrow:
+-get the file upload to work without skipping... figure out why that is happening
+-tracks should be named by their ID and then extension added
+-consider file conversion
+-file playback
+-
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

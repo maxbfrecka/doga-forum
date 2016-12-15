@@ -11,15 +11,18 @@ const multiparty = require('multiparty')
 //set up database
 mongoose.Promise = global.Promise;
 const {PORT, DATABASE_URL} = require('./backend/config');
-const {Artist} = require('./backend/artistModel');
+const {Artist} = require('./backend/models/artistModel');
+const {Album} = require('./backend/models/albumModel');
+const {Track} = require('./backend/models/trackModel');
 
 //file upload
 const multipart = require('connect-multiparty');
 const multipartyMiddleware = multipart(),
 // file upload
 uploadController = require('./backend/uploadController');
-createArtist = require('./backend/createArtist');
+createArtist = require('./backend/uploaders/createArtist');
 createAlbum = require('./backend/uploaders/createAlbum');
+createTrack = require('./backend/uploaders/createTrack');
 const app = express()
 app.use(express.static(__dirname))
 app.use(bodyParser.json());
@@ -29,7 +32,7 @@ app.use(bodyParser.json());
 
 
 
-//experiments with POSTMAN primarily
+//return one artist
 app.get('/artists/:artistName', (req, res) => {
   Artist
     .findOne({artistName: req.params.artistName})
@@ -41,45 +44,37 @@ app.get('/artists/:artistName', (req, res) => {
     });
 });
 
-//[{albumName: "Groadus", albumArtist: req.params.artistName, albumGenre: "hardcorebreaks"}]
-app.put('/artists/:artistName', (req, res) => {
-  Artist
-    .findOneAndUpdate({artistName: req.params.artistName}, {$push:   {albums:{albumName:"okokok"} }       })
-    .then(artist => res.status(204).end())
-    .catch(err => res.status(500).json({message: 'Internal server error'}));
+//should query TRACKS database for tracks
+app.get('/tracks/:artistName/:albumName', (req, res) => {
+  Track
+    .find({trackAlbum: req.params.albumName})
+    .exec()
+    .then(track =>res.json(track))
+    .catch(err => {
+      console.error(err);
+        res.status(500).json({message: 'Internal server error'})
+    });
+});
+
+app.get('/albums/:artistName/:albumName', (req, res) => {
+  Album
+    .find({albumName: req.params.albumName})
+    .exec()
+    .then(album =>res.json(album))
+    .catch(err => {
+      console.error(err);
+        res.status(500).json({message: 'Internal server error'})
+    });
 });
 
 
 
 
 
-//following above experiment, implement here
+//adds album folder, adds album to database onto artist, adds cover art
 app.post('/api/createAlbum', multipartyMiddleware, createAlbum.uploadFile)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.put('/api/createTracks', (req, res) => {
-  Artist
-    .findOneAndUpdate({artistName: req.body.artistName}, {$push:   {albums:{albumName:"okokok"} }       })
-    .then(artist => res.status(204).end())
-    .catch(err => res.status(500).json({message: 'Internal server error'}));
-});
-
-
-
-
+//add track to database and save to file system
+app.post('/api/createTrack', multipartyMiddleware, createTrack.uploadFile)
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, './app', 'index.html')))
 //uploads image file, create folders
