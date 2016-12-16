@@ -1,3 +1,46 @@
+-fix track uploader for multiple tracks
+-playback system fixed
+-queue system fixed
+-click album works like play button
+- deploy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 need Mongoose to:
 -return artistID (already know how)
