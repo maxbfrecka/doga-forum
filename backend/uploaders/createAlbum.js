@@ -78,6 +78,7 @@ createAlbum.prototype.uploadFile = function(req, res) {
           {albumName:req.body.albumName, 
           albumUserName: req.body.albumUserName, 
           albumArtist: req.body.albumArtist,
+          albumArtistImage: req.body.albumArtistImage,
           albumArt: albumArt,
           albumId: albumId,
           albumArtistId: artistId,

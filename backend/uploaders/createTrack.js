@@ -54,13 +54,14 @@ createTrack.prototype.uploadFile = function(req, res) {
       } else {
         console.log(Album.albumId)
         albumId = Album.albumId
-        //grab the artistId now
-        callback(albumId, addTrackToDatabase)
+        trackAlbumArt = Album.albumArt
+        //grab the artistId now...
+        callback(albumId, trackAlbumArt, addTrackToDatabase)
       }
     })
   }
 
-  getArtistId = function(albumId, callback){
+  getArtistId = function(albumId, trackAlbumArt, callback){
     var queryArtistId = Artist.findOne({ 'artistName': req.body.trackArtist })
     queryArtistId.exec(function(err, Artist) {
       if (err) {
@@ -68,14 +69,14 @@ createTrack.prototype.uploadFile = function(req, res) {
       } else {
         artistId = Artist.artistId
         //adds to database
-        callback(artistId, albumId)
+        callback(artistId, albumId, trackAlbumArt)
         //saves the file
         addWavFile(artistId, albumId)
       }
     })
   }
 
-  addTrackToDatabase = function(artistId, albumId, callback){
+  addTrackToDatabase = function(artistId, albumId, trackAlbumArt){
     console.log('inside add to database')
     const dateAdded = new Date()
     //defines path for the album art
@@ -91,6 +92,8 @@ createTrack.prototype.uploadFile = function(req, res) {
           trackId: trackId,
           trackAlbumId: albumId,
           trackArtistId: artistId,
+          trackArtistImage: req.body.trackArtistImage,
+          trackAlbumArt: trackAlbumArt,
           trackDateAdded: dateAdded,
           trackWavSource: trackWavSource
       })

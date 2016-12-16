@@ -1,5 +1,5 @@
 angular.module('createAlbum',['ngFileUpload'])
-.directive('mxCreateAlbum', ['ngAudio', 'nowPlayingList', 'browseTestData', 'libraryData', '$http', 'Upload', 'addAlbumData', '$location', '$window', function(ngAudio, nowPlayingList, browseTestData, libraryData, $http, Upload, addAlbumData, $location, $window){
+.directive('mxCreateAlbum', ['ngAudio', 'nowPlayingList', 'browseTestData', 'libraryData', '$http', 'Upload', 'addAlbumData', '$location', '$window', 'artistData', function(ngAudio, nowPlayingList, browseTestData, libraryData, $http, Upload, addAlbumData, $location, $window, artistData){
 	return {
 		restrict: 'E',
 	  templateUrl: 'createAlbum/createAlbum.html',
@@ -11,13 +11,30 @@ angular.module('createAlbum',['ngFileUpload'])
 	  	//artist name that album is for
 	  	scope.artistEditName = addAlbumData.currentAlbumArtistEdit
 	  	scope.albumName = ''
+	  	scope.currentArtistData = ''
+
+
+	  	//gets the current artist Info in order to add artistArt to album database
+	  	scope.getCurrentArtistInfo = function(artistEditName){
+	  		artistData.getOneArtist(artistEditName)
+	  		.then(function (response) {
+	  			console.log(response.data)
+          scope.currentArtistData = response.data
+          console.log('logging current artist image')
+          console.log(scope.currentArtistData.artistImage)
+        }, function (error) {
+          console.log('failure to load artists')
+        })
+	  	}
+
 
 	  	//need array of track information
 	  	scope.tracks = new Array()
 	  	//funtion to add new information to ng-repeat
 	  	scope.addNewTrack = function(){
+	  		scope.getCurrentArtistInfo(scope.artistEditName)
 	  		trackNumber = scope.tracks.length+1
-	  		scope.tracks.push({trackNumber: trackNumber, trackName: '', trackFile: scope.trackFile})
+	  		scope.tracks.push({trackNumber: trackNumber, trackName: '', trackFile: scope.trackFile, trackArtistImage: scope.currentArtistData.artistImage})
 	  		console.log(scope.tracks)
 
 	  	}
@@ -38,10 +55,13 @@ angular.module('createAlbum',['ngFileUpload'])
 
 	  	//file is inserted above into the function in submitAlbum()
 	  	scope.uploadAlbumArt = function (file) {
+	  		//gets artist info to add to album file if wanted
+	  		//will add artistImage
+	  		scope.getCurrentArtistInfo(scope.artistEditName)
 	  		const url = '/../api/createAlbum'
         Upload.upload({
             url: '/../api/createAlbum',
-            data: {file: file, albumUserName: scope.username, albumArtist: scope.artistEditName, albumName: scope.albumName},
+            data: {file: file, albumUserName: scope.username, albumArtist: scope.artistEditName, albumName: scope.albumName, albumArtistImage: scope.currentArtistData.artistImage},
             file: file
         }).then(function (res) {
             console.log('Success ' + res.config.data.file.name + 'uploaded. Response: ' + res.data)
@@ -61,7 +81,7 @@ angular.module('createAlbum',['ngFileUpload'])
 	        for (var i = 0; i < files.length; i++) {
 	          Upload.upload({
 	          	url: '/../api/createTrack', 
-	          	data: {file: files[i].trackFile, trackUserName: scope.username, trackNumber: files[i].trackNumber, trackName: files[i].trackName, trackAlbum: scope.albumName, trackArtist: scope.artistEditName},
+	          	data: {file: files[i].trackFile, trackUserName: scope.username, trackNumber: files[i].trackNumber, trackName: files[i].trackName, trackAlbum: scope.albumName, trackArtist: scope.artistEditName, trackArtistImage: scope.currentArtistData.artistImage},
 	        		file: files[i].trackFile
 	        	})
 	        }

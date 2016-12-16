@@ -81,6 +81,8 @@ angular.module('artist', [])
 			return $http.get(APIURL, {cache:true})
 	  }
 
+	  
+	  
 	  albumData.showAlbums = function(){
 	    	albumData.getAlbums()
 	    	.then(function(response){

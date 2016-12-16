@@ -45,9 +45,9 @@ app.get('/artists/:artistName', (req, res) => {
 });
 
 //should query TRACKS database for tracks
-app.get('/tracks/:artistName/:albumName', (req, res) => {
+app.get('/tracks/:albumArtist/:albumName', (req, res) => {
   Track
-    .find({trackAlbum: req.params.albumName})
+    .find({trackAlbum: req.params.albumName, trackArtist: req.params.albumArtist})
     .exec()
     .then(track =>res.json(track))
     .catch(err => {
@@ -75,7 +75,12 @@ app.get('/albums/:artistName/:albumName', (req, res) => {
   Album
     .find({albumName: req.params.albumName})
     .exec()
-    .then(album =>res.json(album))
+    .then(albums =>{
+      res.json({
+        albums: albums.map(
+          (album) => album.apiRepr())
+      });
+    })
     .catch(err => {
       console.error(err);
         res.status(500).json({message: 'Internal server error'})

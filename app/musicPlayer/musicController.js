@@ -9,6 +9,7 @@ angular.module('musicController',[])
 	  link: function(scope, element, attrs){
 
 	  	scope.nowPlayingTrack = nowPlayingList.nowPlayingTrack
+	  	scope.musicControllerAlbumArtPath = null
 
 	  	//load in test file to have something in player when site loads
 	  	scope.nowPlaying = ngAudio.load('/musicPlayer/tester.mp3')
@@ -70,7 +71,7 @@ angular.module('musicController',[])
 									scope.trackTitle=null
 						  		scope.albumTitle=null
 						  		scope.artistName=null
-						  		scope.albumCover =null
+						  		scope.musicControllerAlbumArtPath =null
 						  		scope.nowPlaying = ngAudio.load('')
 			  				}
 			  			}
@@ -78,6 +79,10 @@ angular.module('musicController',[])
 			  	)
 /*		  	}
 	  	)*/
+
+
+	  	//sourcepath to use with file path in function
+	  	const sourcePathBase = '/../backend/file-system/artists/'
 
 
 	  	//SONG LOADER
@@ -88,21 +93,27 @@ angular.module('musicController',[])
 	  				//if something was already playing (is defined already), stop playing
 	  				if (scope.nowPlaying != undefined){
 		  				//if the track is the same one already playing, restart and play again
-		  				if (scope.nowPlaying.id === nowPlayingList.nowPlayingTrack.sourceFile){
+		  				if (scope.nowPlaying.id === nowPlayingList.nowPlayingTrack.trackWavSource){
 		  					scope.nowPlaying.currentTime=0
 		  					if (scope.nowPlaying.paused === true){
 		  						scope.nowPlaying.play()
 		  					}
 		  				} else {
 		  				scope.nowPlaying.restart()
+		  				const wavFilePath = sourcePathBase + nowPlayingList.nowPlayingTrack.trackWavSource
+		  				//set album art path
+		  				scope.musicControllerAlbumArtPath = '/../backend/file-system/artists/'+nowPlayingList.nowPlayingTrack.trackAlbumArt
+		  				console.log(wavFilePath)
 		  				//if first track playing, load the new track
-			  			scope.nowPlaying = ngAudio.load(nowPlayingList.nowPlayingTrack.sourceFile)
+			  			scope.nowPlaying = ngAudio.load(wavFilePath)
 			  			//wait until the above is defined...
-			  			scope.nowPlaying.play()			  		
-			  			scope.trackTitle=nowPlayingList.nowPlayingTrack.trackTitle
-			  			scope.albumTitle=nowPlayingList.nowPlayingAlbum.albumTitle
-			  			scope.artistName=nowPlayingList.nowPlayingArtist.artist
-			  			scope.albumCover = nowPlayingList.nowPlayingAlbum.albumCover
+			  			scope.nowPlaying.play()
+
+			  			//uses Track object to get new info  		
+			  			scope.trackTitle=nowPlayingList.nowPlayingTrack.trackName
+			  			scope.albumTitle=nowPlayingList.nowPlayingTrack.trackAlbum
+			  			scope.artistName=nowPlayingList.nowPlayingTrack.trackArtist
+			  			scope.musicControllerAlbumArtPath = '/../backend/file-system/artists/'+nowPlayingList.nowPlayingTrack.trackAlbumArt
 
 
 			  			//for play button queue
@@ -110,13 +121,14 @@ angular.module('musicController',[])
 			  			}
 			  		} else {
 			  			console.log(nowPlayingList.nowPlayingTrack)
+			  			scope.musicControllerAlbumArtPath = '/../backend/file-system/artists/'+nowPlayingList.nowPlayingTrack.trackAlbumArt
 			  			scope.nowPlaying = ngAudio.load(nowPlayingList.nowPlayingTrack.sourceFile)
 			  			//wait until the above is defined...
 			  			scope.nowPlaying.play()
-			  			scope.trackTitle=nowPlayingList.nowPlayingTrack.trackTitle
-			  			scope.albumTitle=nowPlayingList.nowPlayingAlbum.albumTitle
-			  			scope.artistName=nowPlayingList.nowPlayingArtist.artist
-			  			scope.albumCover = nowPlayingList.nowPlayingAlbum.albumCover
+			  			scope.trackTitle=nowPlayingList.nowPlayingTrack.trackName
+			  			scope.albumTitle=nowPlayingList.nowPlayingTrack.trackAlbum
+			  			scope.artistName=nowPlayingList.nowPlayingTrack.trackArtist
+			  			scope.musicControllerAlbumArtPath = '/../backend/file-system/artists/'+nowPlayingList.nowPlayingTrack.trackAlbumArt
 
 			  			//for play button queue
 			  			scope.nowPlayingTrack = nowPlayingList.nowPlayingTrack
