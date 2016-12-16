@@ -1,9 +1,2 @@
 language: node_js
 node_js: node
-deploy:
-  provider: heroku
-  api_key:
-    secure: dElCbpeaZKpAYYXFETN+5/TiK65hNZN5jwZw/6o78iVwBFmOD0P6G4RyAns/0K5zyQmJwawKvAYS+/OWp2CdbPzx1mJS45rlF3IGjLwQ6zgF55wBk5wGcF7hYhYnIrg5QUTwx6Ufky4z255VCXTAWHP24XLrXIe0PWdYYitcj9l7KNOYTT3N5AVfXK+9cDYoEBGiMV4owbPuPw9XRr/pH0wIx45bP4OZwEoLHPc4jyqCRPxDqLVTaFCWWKwwY0Pwo8X/hu3UDSLZ4EDc471/jbIt0ou9cU0sUfty1epAsBj1kEMROJ4V8cOuu/GLsbEs92Uf6MZkoOlbj6IMhk9g97pmdNKoEoxMJgJIBFaFwqXcRL2x88RIpD2iVGfG98Jn7j4TXbvKNMDm+HPs6wUdcQ23A/pYilU/TDHoOc+1pdJBHLzCuEH4as9gEnmWe8Q7yCabulf9PeIdZa3o7JR+GS4aBGH+8MotXN0HU8AwRwB4zYD86Yw9eP0g4dEinBFKurNCI/8fPfuLdP5pPTEA2YzceIaVKsexwdVTQ7Prnv3E/nX8eehFMZiclasDTU99RzrV5jahwvBbcrgKZZK4BmjbEsBfqwr8souXUq0Mcg3FdUTAz409bCO7nIyVukGm5yjOyNWKI+IAoPzsUHgPkbOFSrG1drtEcsFtFYCPGDQ=
-  app: mighty-earth-24849
-  on:
-    repo: maxbfrecka/doga-forum
