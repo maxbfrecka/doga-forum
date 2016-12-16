@@ -4,8 +4,9 @@
 -click album works like play button
 - deploy
 
-# deploy::app https://mighty-earth-24849.herokuapp.com/
-
+---> unfortunately heroku is a PoS
+-did a "post install" for bower stuff ... in the json file
+-I have no idea why this isn't working
 
 
 

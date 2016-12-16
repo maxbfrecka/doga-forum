@@ -9,6 +9,7 @@
   "homepage": "",
   "ignore": [
     "**/.*",
+    "bower_components",
     "node_modules",
     "test",
     "tests"

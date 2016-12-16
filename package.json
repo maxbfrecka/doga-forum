@@ -4,8 +4,7 @@
   "description": "",
   "main": "karma.conf.js",
   "scripts": {
-    "test": "mocha",
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",

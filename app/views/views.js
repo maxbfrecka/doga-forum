@@ -1,5 +1,5 @@
 angular.module('views', ['ngRoute'])
-	.config(['$routeProvider', function($routeProvider){
+	.config(['$routeProvider',  function($routeProvider){
 	  $routeProvider.when('/catalog/', {
 	    templateUrl: 'views/main.html'
 	  })
@@ -51,6 +51,7 @@ angular.module('views', ['ngRoute'])
 	    template : '<p>Error - Page Not Found</p>'
 	  })
 	  .otherwise('/error');
+
   }])
   .run(['$rootScope', '$location', function($rootScope, $location) {
 	  $rootScope.$on('$routeChangeError', function() {

@@ -132,5 +132,5 @@ app.get('/api/getArtists', (req, res) => {
 
 mongoose.connect('mongodb://maxbfrecka:Shug1234@ds133398.mlab.com:33398/mxforum')
 
-app.listen(process.env.PORT || port, () => console.log(
+app.listen(process.env.PORT || 8080, () => console.log(
   `Your app is listening on port ${process.env.PORT || 8080}`))
