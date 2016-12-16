@@ -1,5 +1,5 @@
 {
-  "name": "angular-capstone",
+  "name": "doga-forum",
   "authors": [
     "maxbfrecka <maxbfrecka@gmail.com>"
   ],
@@ -10,7 +10,6 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
     "test",
     "tests"
   ],
