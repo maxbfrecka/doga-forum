@@ -1,3 +1,2 @@
 language: node_js
 node_js: node
-# deploy::app https://mighty-earth-24849.herokuapp.com/

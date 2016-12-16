@@ -19,7 +19,6 @@ const {Track} = require('./backend/models/trackModel');
 const multipart = require('connect-multiparty');
 const multipartyMiddleware = multipart(),
 // file upload
-uploadController = require('./backend/uploadController');
 createArtist = require('./backend/uploaders/createArtist');
 createAlbum = require('./backend/uploaders/createAlbum');
 createTrack = require('./backend/uploaders/createTrack');
